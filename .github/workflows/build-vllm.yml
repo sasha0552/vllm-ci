@@ -1,0 +1,72 @@
+name: Build vLLM wheel
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref }}
+          repository: ${{ github.event.inputs.repository }}
+
+      - name: Resolve SOURCE_DATE_EPOCH
+        id: source-date-epoch
+        run: |
+          echo "SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)" | tee $GITHUB_OUTPUT
+
+      - name: Apply patches
+        run: |
+          set -e
+
+          # List of patches
+          patches=(
+            "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/patches/vllm/0000-enable-support-for-pascal-gpus.patch"
+            "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/patches/vllm/1000-set-torch-cuda-arch-list.patch"
+            "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/patches/vllm/9000-add-vllm-command-that-launches-api-server.patch"
+          )
+
+          # Apply patches
+          for patch in ${patches[@]}; do
+            echo "Applying patch $patch"
+            curl "$patch" | patch -p1
+          done
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.18.0
+        env:
+          CIBW_BUILD: cp311-manylinux_x86_64
+          CIBW_MANYLINUX_PYPY_X86_64_IMAGE: ghcr.io/sasha0552/manylinux2014_x86_64-cuda
+          CIBW_MANYLINUX_X86_64_IMAGE: ghcr.io/sasha0552/manylinux2014_x86_64-cuda
+          CIBW_REPAIR_WHEEL_COMMAND: ~
+          SOURCE_DATE_EPOCH: ${{ steps.source-date-epoch.outputs.SOURCE_DATE_EPOCH }}
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: wheelhouse/*.whl
+          tag_name: ${{ github.event.inputs.tag_name }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      repository:
+        default: vllm-project/vllm
+        description: Source repository
+        required: true
+        type: string
+
+      ref:
+        default: main
+        description: Source ref
+        required: true
+        type: string
+
+      tag_name:
+        description: Target tag
+        required: true
+        type: string
+
+permissions:
+  contents: write

@@ -1,0 +1,18 @@
+--- a/lib/Conversion/TritonGPUToLLVM/TritonGPUToLLVMPass.cpp
++++ b/lib/Conversion/TritonGPUToLLVM/TritonGPUToLLVMPass.cpp
+@@ -859,9 +859,12 @@ private:
+ 
+   static Value promoteOperand(OpBuilder &builder, Location loc, Value operand,
+                               Type promotedType) {
+-    Type tensorPromotedType =
+-        operand.getType().cast<RankedTensorType>().cloneWith(std::nullopt,
+-                                                             promotedType);
++    RankedTensorType tensor = operand.getType().cast<RankedTensorType>();
++    Type tensorElementType = tensor.getElementType();
++    Type tensorPromotedType = tensor.cloneWith(std::nullopt, promotedType);
++    if (tensorElementType.isF16() && promotedType.isF32()) {
++      return builder.create<arith::ExtFOp>(loc, tensorPromotedType, operand);
++    }
+     return builder.create<triton::FpToFpOp>(loc, tensorPromotedType, operand);
+   }
+ 

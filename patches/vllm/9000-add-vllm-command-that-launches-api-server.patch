@@ -1,0 +1,20 @@
+--- a/setup.py
++++ b/setup.py
+@@ -430,4 +430,9 @@ def _read_requirements(filename: str) -> List[str]:
+     },
+     cmdclass={"build_ext": cmake_build_ext} if not _is_neuron() else {},
+     package_data=package_data,
++    entry_points={
++        "console_scripts": [
++            "vllm=vllm.scripts:main",
++        ],
++    },
+ )
+--- /dev/null
++++ b/vllm/scripts.py
+@@ -0,0 +1,5 @@
++import subprocess
++import sys
++
++def main():
++  subprocess.run([sys.executable, "-m", "vllm.entrypoints.openai.api_server"] + sys.argv[1:])
