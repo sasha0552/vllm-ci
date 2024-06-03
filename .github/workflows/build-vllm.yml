@@ -36,7 +36,7 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.18.0
         env:
-          CIBW_BUILD: cp311-manylinux_x86_64
+          CIBW_BUILD: cp${{ matrix.python_version }}-manylinux_x86_64
           CIBW_MANYLINUX_PYPY_X86_64_IMAGE: ghcr.io/sasha0552/manylinux2014_x86_64-cuda
           CIBW_MANYLINUX_X86_64_IMAGE: ghcr.io/sasha0552/manylinux2014_x86_64-cuda
           CIBW_REPAIR_WHEEL_COMMAND: ~
@@ -47,6 +47,10 @@ jobs:
         with:
           files: wheelhouse/*.whl
           tag_name: ${{ github.event.inputs.tag_name }}
+
+    strategy:
+      matrix:
+        python_version: [38, 39, 310, 311]
 
 on:
   workflow_dispatch:

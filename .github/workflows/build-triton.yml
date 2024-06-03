@@ -37,7 +37,7 @@ jobs:
         with:
           package-dir: python
         env:
-          CIBW_BUILD: cp311-manylinux_x86_64
+          CIBW_BUILD: cp${{ matrix.python_version }}-manylinux_x86_64
           SOURCE_DATE_EPOCH: ${{ steps.source-date-epoch.outputs.SOURCE_DATE_EPOCH }}
 
       - name: Create release
@@ -45,6 +45,10 @@ jobs:
         with:
           files: wheelhouse/*.whl
           tag_name: ${{ github.event.inputs.tag_name }}
+
+    strategy:
+      matrix:
+        python_version: [37, 38, 39, 310, 311, 312]
 
 on:
   workflow_dispatch:
