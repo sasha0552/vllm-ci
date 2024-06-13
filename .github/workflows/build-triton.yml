@@ -64,7 +64,7 @@ on:
         type: string
 
       ref:
-        default: 3f8d91bb17f6e7bc33dc995ae0860db89d351c7b
+        default: release/2.3.x
         description: Source ref
         required: true
         type: string
