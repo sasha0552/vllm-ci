@@ -26,7 +26,7 @@ vllm --help
 ```
 
 To update a patched `vLLM` between same `vLLM` release versions (e.g. `0.5.0` (commit `000000`) -> `0.5.0` (commit `ffffff`))
-```
+```sh
 # Activate virtual environment
 source venv/bin/activate
 
@@ -57,20 +57,21 @@ In other words, add `--extra-index-url https://sasha0552.github.io/vllm-ci/` to 
 
 To install the patched `triton` separately, for use in other applications (for example, Stable Diffusion WebUIs):
 
-Install application that depends on `triton`:
+Install application that published on PyPI and depends on `triton`:
 ```sh
 # Install triton
 pip3 install --extra-index-url https://sasha0552.github.io/vllm-ci/ <PACKAGE NAME>
 ```
 
 Install `triton` before installing application:
-```
+```sh
 # Install triton
 pip3 install --extra-index-url https://sasha0552.github.io/vllm-ci/ triton
 ```
 
 If application is already installed:
-```
+```sh
+# Install triton
 pip3 install --extra-index-url https://sasha0552.github.io/vllm-ci/ --force-reinstall triton
 ```
 
