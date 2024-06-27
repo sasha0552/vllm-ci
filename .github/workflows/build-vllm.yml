@@ -15,6 +15,11 @@ jobs:
           ref: ${{ github.event.inputs.ref }}
           repository: ${{ github.event.inputs.repository }}
 
+      - name: Resolve commit hash
+        id: commit-hash
+        run: |
+          echo "COMMIT_HASH=$(git rev-parse HEAD)" | tee $GITHUB_OUTPUT
+
       - name: Resolve SOURCE_DATE_EPOCH
         id: source-date-epoch
         run: |
@@ -49,6 +54,7 @@ jobs:
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
+          body: https://github.com/vllm-project/vllm/commit/${{ steps.commit-hash.outputs.COMMIT_HASH }}
           draft: true
           files: wheelhouse/*.whl
           tag_name: ${{ github.event.inputs.tag_name }}
