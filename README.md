@@ -1,10 +1,14 @@
 # vllm-ci
 
-CI scripts designed to build a Pascal-compatible version of vLLM.
+CI scripts designed to build a Pascal-compatible version of vLLM and Triton.
 
 ## Installation
 
-### vLLM
+### [vllm](https://github.com/vllm-project/vllm)
+
+*Note: this repository holds "nightly" builds of `vLLM`, which may have the same `vLLM` version between releases in this repository, but have different source code. Despite the fact that they are "nightly", they are generally stable.*
+
+*Note: the `vllm` command is an alias for the `python3 -m vllm.entrypoints.openai.api_server` command.*
 
 To install the patched `vLLM` (the patched `triton` will be installed automatically):
 ```sh
@@ -21,15 +25,53 @@ pip3 install --extra-index-url https://sasha0552.github.io/vllm-ci/ vllm
 vllm --help
 ```
 
-Note that `vllm` is an alias for `python3 -m vllm.entrypoints.openai.api_server`.
+To update a patched `vLLM` between same `vLLM` release versions (e.g. `0.5.0` (commit `000000`) -> `0.5.0` (commit `ffffff`))
+```
+# Activate virtual environment
+source venv/bin/activate
 
-### Triton
+# Update vLLM
+pip3 install --force-reinstall --extra-index-url https://sasha0552.github.io/vllm-ci/ --no-cache-dir --no-deps --upgrade vllm
+```
 
-To install the patched `triton` separately, for use in other applications:
+### [aphrodite-engine](https://github.com/PygmalionAI/aphrodite-engine)
 
+To install `aphrodite-engine` with the patched `triton`:
 ```sh
+# Create virtual environment
+python3 -m venv venv
+
+# Activate virtual environment
+source venv/bin/activate
+
+# Install aphrodite-engine
+pip3 install --extra-index-url https://sasha0552.github.io/vllm-ci/ --extra-index-url https://downloads.pygmalion.chat/whl aphrodite-engine
+
+# Launch aphrodite-engine
+aphrodite --help
+```
+
+In other words, add `--extra-index-url https://sasha0552.github.io/vllm-ci/` to the original installation command.
+
+### [triton](https://github.com/triton-lang/triton)
+
+To install the patched `triton` separately, for use in other applications (for example, Stable Diffusion WebUIs):
+
+Install application that depends on `triton`:
+```sh
+# Install triton
+pip3 install --extra-index-url https://sasha0552.github.io/vllm-ci/ <PACKAGE NAME>
+```
+
+Install `triton` before installing application:
+```
 # Install triton
 pip3 install --extra-index-url https://sasha0552.github.io/vllm-ci/ triton
 ```
 
-Note that you may need to install triton with `--force-reinstall` if triton has already been installed.
+If application is already installed:
+```
+pip3 install --extra-index-url https://sasha0552.github.io/vllm-ci/ --force-reinstall triton
+```
+
+*Don't forget to activate the virtual environment (if necessary) before performing actions!*
