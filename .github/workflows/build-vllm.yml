@@ -24,12 +24,6 @@ jobs:
         run: |
           set -e
 
-          # Merge PR #5054
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git fetch origin pull/5054/head:tokenizer-endpoints
-          git merge --message "Merge branch 'tokenizer-endpoints'" --no-ff tokenizer-endpoints
-
           # List of patches
           patches=(
             "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/patches/vllm/0000-enable-support-for-pascal-gpus.patch"
