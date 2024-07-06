@@ -57,9 +57,9 @@ jobs:
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
-          body: https://github.com/vllm-project/vllm/commit/${{ steps.commit-hash.outputs.COMMIT_HASH }}
-          draft: true
+          body: https://github.com/${{ github.event.inputs.repository }}/commit/${{ steps.commit-hash.outputs.COMMIT_HASH }}
           files: wheelhouse/*.whl
+          prerelease: true
           tag_name: ${{ github.event.inputs.tag_name }}
 
     strategy:
