@@ -41,8 +41,7 @@ jobs:
           package-dir: python
         env:
           CIBW_BUILD: cp${{ matrix.python_version }}-manylinux_x86_64
-          CIBW_ENVIRONMENT: |
-            CMAKE_BUILD_TYPE=Release
+          CIBW_ENVIRONMENT: CMAKE_BUILD_TYPE=Release
           SOURCE_DATE_EPOCH: ${{ steps.source-date-epoch.outputs.SOURCE_DATE_EPOCH }}
 
       - name: Create release

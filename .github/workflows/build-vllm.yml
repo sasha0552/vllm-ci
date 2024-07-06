@@ -46,9 +46,7 @@ jobs:
         uses: pypa/cibuildwheel@v2.18.0
         env:
           CIBW_BUILD: cp${{ matrix.python_version }}-manylinux_x86_64
-          CIBW_ENVIRONMENT: |
-            CMAKE_BUILD_TYPE=Release
-            VLLM_INSTALL_PUNICA_KERNELS=0
+          CIBW_ENVIRONMENT: CMAKE_BUILD_TYPE=Release VLLM_INSTALL_PUNICA_KERNELS=0
           CIBW_MANYLINUX_PYPY_X86_64_IMAGE: ghcr.io/sasha0552/manylinux2014_x86_64-cuda
           CIBW_MANYLINUX_X86_64_IMAGE: ghcr.io/sasha0552/manylinux2014_x86_64-cuda
           CIBW_REPAIR_WHEEL_COMMAND: ~
