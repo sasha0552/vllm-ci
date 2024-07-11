@@ -59,6 +59,8 @@ In other words, add `--extra-index-url https://sasha0552.github.io/vllm-ci/` to 
 
 To install the patched `triton` separately, for use in other applications (for example, Stable Diffusion WebUIs):
 
+*Note that this will install `triton==2.3.0` (for `torch==2.3.0`)! If you need other versions of `triton`, check out my other repo - [triton-ci](https://github.com/sasha0552/triton-ci). I plan to publish it on PyPI as soon as the [file size limit increase request](https://github.com/pypi/support/issues/4295) is approved.*
+
 Install application that published on PyPI and depends on `triton`:
 ```sh
 # Install triton
@@ -74,7 +76,7 @@ pip3 install --extra-index-url https://sasha0552.github.io/vllm-ci/ triton
 If application is already installed:
 ```sh
 # Install triton
-pip3 install --extra-index-url https://sasha0552.github.io/vllm-ci/ --force-reinstall triton
+pip3 install --index-url https://sasha0552.github.io/vllm-ci/ --force-reinstall --no-deps triton
 ```
 
 *Don't forget to activate the virtual environment (if necessary) before performing actions!*
