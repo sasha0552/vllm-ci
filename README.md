@@ -8,8 +8,6 @@ CI scripts designed to build a Pascal-compatible version of vLLM and Triton.
 
 *Note: this repository holds "nightly" builds of `vLLM`, which may have the same `vLLM` version between releases in this repository, but have different source code. Despite the fact that they are "nightly", they are generally stable.*
 
-*Note: the `vllm` command is an alias for the `python3 -m vllm.entrypoints.openai.api_server` command.*
-
 *Note: kernels for all GPUs except Pascal have been excluded to reduce build time and wheel size. You can still use the new GPUs using tensor parallelism with Ray (and using two instances of `vLLM`, one of which will use upstream `vLLM`). Complain in [issues](https://github.com/sasha0552/vllm-ci/issues) if it disrupts your workflow.*
 
 To install the patched `vLLM` (the patched `triton` will be installed automatically):
@@ -24,7 +22,7 @@ source venv/bin/activate
 pip3 install --extra-index-url https://sasha0552.github.io/vllm-ci/ vllm
 
 # Launch vLLM
-vllm --help
+vllm serve --help
 ```
 
 To update a patched `vLLM` between same `vLLM` release versions (e.g. `0.5.0` (commit `000000`) -> `0.5.0` (commit `ffffff`))

@@ -33,7 +33,6 @@ jobs:
           patches=(
             "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/patches/vllm/0000-enable-support-for-pascal-gpus.patch"
             "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/patches/vllm/1000-set-torch-cuda-arch-list.patch"
-            "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/patches/vllm/9000-add-vllm-command-that-launches-api-server.patch"
           )
 
           # Apply patches
