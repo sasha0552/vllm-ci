@@ -33,6 +33,7 @@ jobs:
           patches=(
             "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/patches/vllm/0000-enable-support-for-pascal-gpus.patch"
             "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/patches/vllm/1000-set-torch-cuda-arch-list.patch"
+            "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/patches/vllm/2000-enable-limited-api-build-on-cibw.patch"
           )
 
           # Apply patches
@@ -44,7 +45,7 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.18.0
         env:
-          CIBW_BUILD: cp${{ matrix.python_version }}-manylinux_x86_64
+          CIBW_BUILD: cp38-manylinux_x86_64
           CIBW_ENVIRONMENT: CMAKE_BUILD_TYPE=Release VLLM_INSTALL_PUNICA_KERNELS=0
           CIBW_MANYLINUX_PYPY_X86_64_IMAGE: ghcr.io/sasha0552/manylinux2014_x86_64-cuda
           CIBW_MANYLINUX_X86_64_IMAGE: ghcr.io/sasha0552/manylinux2014_x86_64-cuda
@@ -58,10 +59,6 @@ jobs:
           files: wheelhouse/*.whl
           prerelease: true
           tag_name: ${{ github.event.inputs.tag_name }}
-
-    strategy:
-      matrix:
-        python_version: [38, 39, 310, 311]
 
 on:
   workflow_dispatch:
